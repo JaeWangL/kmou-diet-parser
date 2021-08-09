@@ -9,6 +9,8 @@ const enum DietType {
   Ramen = 2, // 라면코너
   SnackBar = 3, // 분식코너
   Bowl = 4, // 덮밥
+  StaffNoraml = 5, // 교직원 중식
+  StaffPremium = 6, // 교직원 일품식
 }
 
 const removeSpecialCharacters = (content: string): string => {
