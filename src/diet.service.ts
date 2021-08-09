@@ -68,19 +68,16 @@ export class DietService {
     rawBody(
       'div > section > section > div > div > div > div > div > table > tbody > tr > td',
     ).each((index, element) => {
+      if (foundToday && rawBody(element).html().startsWith('<strong>')) {
+        return false;
+      }
       if (foundToday) {
         results.push(rawBody(element).text());
       }
       if (rawBody(element).html().includes(todayMMddFormat)) {
         foundToday = true;
       }
-      if (rawBody(element).html().includes(tomorrowMMddFormat)) {
-        foundToday = true;
-        return false;
-      }
     });
-
-    results.pop(); // MARK: Remove tomorrow date item
 
     results.forEach((item, index) => {
       if (index % 2 == 0) {
