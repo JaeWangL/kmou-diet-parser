@@ -1,6 +1,10 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-import { DietService, SocietyResultType } from './diet.service';
+import {
+  DietService,
+  NavalResultType,
+  SocietyResultType,
+} from './diet.service';
 
 @Controller()
 export class AppController {
@@ -22,7 +26,7 @@ export class AppController {
   }
 
   @Get('diet/naval')
-  async getDietUniv(): Promise<[string[], string[]]> {
+  async getDietUniv(): Promise<NavalResultType> {
     const res = await this.dietSvc.getNavalDietAsync();
 
     return res;

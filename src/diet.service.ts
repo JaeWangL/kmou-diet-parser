@@ -26,6 +26,11 @@ export interface SocietyResultType {
   value: string;
 }
 
+export interface NavalResultType {
+  lunch: string[];
+  dinner: string[];
+}
+
 // 어울림관: https://www.kmou.ac.kr/coop/dv/dietView/selectDietDateView.do
 @Injectable()
 export class DietService {
@@ -49,10 +54,8 @@ export class DietService {
     return results;
   }
 
-  async getNavalDietAsync(): Promise<[string[], string[]]> {
+  async getNavalDietAsync(): Promise<NavalResultType> {
     const results: string[] = [];
-    const lunchList: string[] = [];
-    const dinnerList: string[] = [];
     let foundToday = false;
     const fisrtItemUrl = await this.getFirstItemPathFromNaval();
     const result = await got.get(fisrtItemUrl);
@@ -76,15 +79,10 @@ export class DietService {
       }
     });
 
-    results.forEach((item, index) => {
-      if (index % 2 == 0) {
-        lunchList.push(item);
-      } else {
-        dinnerList.push(item);
-      }
-    });
-
-    return [lunchList, dinnerList];
+    return {
+      lunch: results.filter((_, index) => index % 2 === 0),
+      dinner: results.filter((_, index) => index % 2 !== 0),
+    };
   }
 
   async getFirstItemPathFromNaval(): Promise<string> {
