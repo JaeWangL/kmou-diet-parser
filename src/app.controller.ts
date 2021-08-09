@@ -22,9 +22,9 @@ export class AppController {
   }
 
   @Get('diet/naval')
-  async getDietUniv(): Promise<string> {
-    await this.dietSvc.getNavalDietAsync();
+  async getDietUniv(): Promise<[string[], string[]]> {
+    const res = await this.dietSvc.getNavalDietAsync();
 
-    return '';
+    return res;
   }
 }

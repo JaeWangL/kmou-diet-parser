@@ -47,8 +47,10 @@ export class DietService {
     return results;
   }
 
-  async getNavalDietAsync(): Promise<void> {
+  async getNavalDietAsync(): Promise<[string[], string[]]> {
     const results: string[] = [];
+    const lunchList: string[] = [];
+    const dinnerList: string[] = [];
     let foundToday = false;
     const fisrtItemUrl = await this.getFirstItemPathFromNaval();
     const result = await got.get(fisrtItemUrl);
@@ -78,6 +80,16 @@ export class DietService {
     });
 
     results.pop(); // MARK: Remove tomorrow date item
+
+    results.forEach((item, index) => {
+      if (index % 2 == 0) {
+        lunchList.push(item);
+      } else {
+        dinnerList.push(item);
+      }
+    });
+
+    return [lunchList, dinnerList];
   }
 
   async getFirstItemPathFromNaval(): Promise<string> {
