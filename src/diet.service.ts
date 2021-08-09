@@ -59,11 +59,6 @@ export class DietService {
       .format('MM/DD')
       .replace('0', '')
       .replace('/0', '/');
-    const tomorrowMMddFormat = DayJS(new Date())
-      .add(1, 'd')
-      .format('MM/DD')
-      .replace('0', '')
-      .replace('/0', '/');
 
     rawBody(
       'div > section > section > div > div > div > div > div > table > tbody > tr > td',
