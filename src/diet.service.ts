@@ -75,7 +75,8 @@ export class DietService {
         foundToday = true;
       }
       if (rawBody(element).html().includes(tomorrowMMddFormat)) {
-        foundToday = false;
+        foundToday = true;
+        return false;
       }
     });
 
