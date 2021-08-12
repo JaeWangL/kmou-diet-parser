@@ -1,7 +1,7 @@
 import cheerio from 'cheerio';
 import DayJS from 'dayjs';
 import got from 'got';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 const enum DietType {
   English = 0, // 양식코너
@@ -32,6 +32,7 @@ export interface NavalResultType {
 }
 
 // 어울림관: https://www.kmou.ac.kr/coop/dv/dietView/selectDietDateView.do
+// 해사대: http://badaro.kmou.ac.kr/food
 @Injectable()
 export class DietService {
   private readonly societyUrl =
@@ -60,7 +61,7 @@ export class DietService {
     const fisrtItemUrl = await this.getFirstItemPathFromNaval();
     const result = await got.get(fisrtItemUrl);
     const rawBody = cheerio.load(result.body);
-    const todayMMddFormat = DayJS(new Date())
+    const todayMMddFormat = DayJS()
       .format('MM/DD')
       .replace('0', '')
       .replace('/0', '/');
@@ -78,6 +79,11 @@ export class DietService {
         foundToday = true;
       }
     });
+    if (!foundToday) {
+      throw new NotFoundException(
+        'DietService.getNavalDietAsync: There are no any diet',
+      );
+    }
 
     return {
       lunch: results.filter((_, index) => index % 2 === 0),
