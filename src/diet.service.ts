@@ -52,6 +52,12 @@ export class DietService {
       });
     });
 
+    if (results.length === 3 && results[0].value.includes('년')) {
+      throw new NotFoundException(
+        'DietService.getSocietyDietAsync: There are no any diet',
+      );
+    }
+
     return results;
   }
 
